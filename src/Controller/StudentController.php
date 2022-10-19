@@ -2,10 +2,16 @@
 
 namespace App\Controller;
 
+use App\Entity\Student;
+use App\Form\StudentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use App\Repository\StudentRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class StudentController extends AbstractController
 {
@@ -34,5 +40,51 @@ class StudentController extends AbstractController
     {
         
         return $this->redirect('/student');
+    }
+
+
+    /**
+     * @Route("/studentList", name="list_students")
+     */
+
+    public function listStudents(StudentRepository $repository)
+    {
+        $student=$repository->findAll();
+        return $this->render("student/studentList.html.twig",array ("tabStudent"=>$student));
+    }
+
+
+    /**
+     * @Route("/addstudent3", name="add3_student")
+     */
+    
+    public function addStudent(ManagerRegistry $doctrine,Request $request,StudentRepository $repository)
+    {
+        $student= new Student;
+        $form= $this->createForm(StudentType::class,$student);
+        $form->handleRequest($request) ;
+        if ($form->isSubmitted()){
+
+                $repository->add($student,true);
+            //  $em= $doctrine->getManager();
+            //  $em->persist($student);
+            //  $em->flush();
+             return  $this->redirectToRoute("list_students");
+         }
+        return $this->renderForm("student/addstudent.html.twig",array("formStudent"=>$form));
+    }
+
+
+    /**
+     * @Route("/remove/{id}", name="remove")
+     */
+    public function removeStudent(ManagerRegistry $doctrine,$id,StudentRepository $repository)
+    {
+        $student= $repository->find($id);
+        $repository->remove($student,true);
+        // $em = $doctrine->getManager();
+        // $em->remove($student);
+        // $em->flush();
+        return  $this->redirectToRoute("list_students");
     }
 }

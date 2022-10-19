@@ -27,6 +27,11 @@ class Student
      */
     private $moyenne;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=ClassRoom::class, inversedBy="students")
+     */
+    private $classRoom;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Student
     public function setMoyenne(?float $moyenne): self
     {
         $this->moyenne = $moyenne;
+
+        return $this;
+    }
+
+    public function getClassRoom(): ?ClassRoom
+    {
+        return $this->classRoom;
+    }
+
+    public function setClassRoom(?ClassRoom $classRoom): self
+    {
+        $this->classRoom = $classRoom;
 
         return $this;
     }
