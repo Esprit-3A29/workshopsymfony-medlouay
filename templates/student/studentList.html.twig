@@ -8,3 +8,21 @@ moyenne : {{s.moyenne}}
 <a href="{{ path('remove',{'id':s.id}) }}">DELETE</a>
 <br/>
 {% endfor %}
+
+<h1>sorted</h1>
+{% for i in sorted %}
+numero carte etudient : {{i.id}}
+username : {{i.username}}
+moyenne : {{i.moyenne}}
+<br/>
+{% endfor %}
+
+
+<h1>top students</h1>
+{% for i in topstudents %}
+numero carte etudient : {{i.id}}
+username : {{i.username}}
+moyenne : {{i.moyenne}}
+<br/>
+
+{% endfor %}

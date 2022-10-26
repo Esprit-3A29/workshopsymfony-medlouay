@@ -50,7 +50,9 @@ class StudentController extends AbstractController
     public function listStudents(StudentRepository $repository)
     {
         $student=$repository->findAll();
-        return $this->render("student/studentList.html.twig",array ("tabStudent"=>$student));
+        $sortBymoyenne=$repository->sortByMoyenne();
+        $topstudents=$repository->topStudent();
+        return $this->render("student/studentList.html.twig",array ("tabStudent"=>$student,"sorted"=>$sortBymoyenne,"topstudents"=>$topstudents));
     }
 
 
