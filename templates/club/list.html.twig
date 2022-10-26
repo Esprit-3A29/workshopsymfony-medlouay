@@ -1,0 +1,36 @@
+<h1> list de formations de la classe {{classe}} dans la salle {{salle}}</h1>
+<img src="{{asset('img/download.jpg')}}" alt="student"><br>
+
+{% if tab_formations is empty%}
+<h6 color="red"> pas de formations</h6>
+{% else %}
+
+{% for i in tab_formations %}
+{% set nom = 0 %}
+{% if i.Description == "theorique" %}
+ref: {{i.ref}} titre: {{i.Titre|upper}} description: {{i.Description}} nb participants {{i.nb_participants}} Participer:
+{% if i.nb_participants == 0 %}<a href="{{path('app_reservation',{nom_formation: i.Titre })}}"> participer </a>
+
+{% else %} complet
+{% endif %}
+<br>
+{% endif %}
+{% endfor %}
+{% endif %}
+
+<h5> nbr de formations : {{tab_formations|length}}
+
+
+
+
+{% set maxp = 0 %}
+{% set somme = 0 %}
+{% for i in tab_formations %} 
+    {% set somme = somme+ i.nb_participants %}
+    {% set maxp = max(i.nb_participants, maxp) %}
+{% endfor %} 
+
+<h5> la formation ayant le plus:{{maxp}}</h5> 
+<h5> nombre totale de participants:{{somme}}</h5> 
+
+
